@@ -26,8 +26,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "mongoose": "^6.10.3",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0",
-    "webpack": "^5.79.0"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.2.0",
