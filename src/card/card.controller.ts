@@ -5,34 +5,34 @@ import { CardService } from './card.service';
 @Controller('Card')
 export class CardController {
 
-    constructor(private readonly productsService: CardService) {}
+    constructor(private readonly cardService: CardService) {}
 
     @Post() 
     async addCard(@Body() completeBody: Card ){
-        const generatedId = await this.productsService.insertCard(completeBody);
+        const generatedId = await this.cardService.insertCard(completeBody);
         return {id: generatedId };
     }
 
     @Get('all') 
     async getCards(){
-        const products = await this.productsService.getCards() as Card[];
-        return products;
+        const cards = await this.cardService.getCards() as Card[];
+        return cards;
     }
 
     @Get(':id') 
     async getCard(@Param('id') id: string){
-        return await this.productsService.getCardById(id);
+        return await this.cardService.getCardById(id);
     }
 
     @Patch(':id') 
     async updateCard(@Param('id') id: string, @Body('type') type: string, @Body('cardText') cardText: string, @Body('category') category: string){
-        await this.productsService.updateCardById(id, type, cardText, category);
+        await this.cardService.updateCardById(id, type, cardText, category);
         return null;
     }
 
     @Delete(':id') 
     async removeCard(@Param('id') id: string){
-        await this.productsService.removeCardById(id);
+        await this.cardService.removeCardById(id);
         return null;
     }
 }

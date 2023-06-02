@@ -5,42 +5,42 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class CardService {
-    products: Card[] = [];
+    cards: Card[] = [];
 
     constructor(@InjectModel('Card') private readonly cardModel: Model<Card>){}
 
-    async insertCard(product: Card) {
-        const newProduct = new this.cardModel({type: product.type, cardText: product.cardText, category: product.category});
-        const result = await newProduct.save();
+    async insertCard(card: Card) {
+        const newcard = new this.cardModel({type: card.type, cardText: card.cardText, category: card.category});
+        const result = await newcard.save();
         return result.id as string;
     }
 
     async getCards() {
-        const products = await this.cardModel.find().exec();
-        return products.map((prod) => ({id: prod.id, type: prod.type, cardText: prod.cardText, category: prod.category}));
+        const cards = await this.cardModel.find().exec();
+        return cards.map((card) => ({id: card.id, type: card.type, cardText: card.cardText, category: card.category}));
     }
 
     private async findCards(id: string): Promise<Card> {
-        let product;
+        let card;
         try{
-            product = await this.cardModel.findById(id);
+            card = await this.cardModel.findById(id);
         } catch(error) {
-            throw new NotFoundException('Could not find product.');
+            throw new NotFoundException('Could not find card.');
         }
 
-        if(!product){
-            throw new NotFoundException('Could not find product.');
+        if(!card){
+            throw new NotFoundException('Could not find card.');
         }
-        return product;
+        return card;
     }
 
     async getCardById(id: string) {
-        const product = await this.findCards(id);
+        const card = await this.findCards(id);
         return {
-            id: product.id, 
-            type: product.type, 
-            cardText: product.cardText, 
-            category: product.category
+            id: card.id, 
+            type: card.type, 
+            cardText: card.cardText, 
+            category: card.category
         };;
     }
 
@@ -59,10 +59,10 @@ export class CardService {
         updateCard.save();
     }
 
-    async removeCardById(prodId: string) {
-        const result = await this.cardModel.deleteOne({_id: prodId}).exec();
+    async removeCardById(cardId: string) {
+        const result = await this.cardModel.deleteOne({_id: cardId}).exec();
         if(result.deletedCount === 0){
-            throw new NotFoundException('Could not find product.');
+            throw new NotFoundException('Could not find card.');
         }
     }
 }
