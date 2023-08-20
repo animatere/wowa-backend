@@ -20,6 +20,16 @@ export class UserService {
         }
     }
 
+    async loginUser(User: User) {
+        const loginUser = new this.UserModel({userRole: User.userRole, userName: User.userName, userPassword: User.userPassword});
+        if((await this.getUserByNameAndPassword(User.userName, User.userPassword))){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
     async getUsers() {
         const Users = await this.UserModel.find().exec();
         return Users.map((user) => ({id: user.id, userRole: user.userRole, userName: user.userName, userPassword: user.userPassword}));
@@ -53,6 +63,17 @@ export class UserService {
         let User;
         try{
             User = await this.UserModel.findOne({ userName: userName });
+        } catch(error) {
+            throw new NotFoundException('Error while searching for existing Users.');
+        }
+
+        return User;
+    }
+
+    async getUserByNameAndPassword(userName: string, userPassword: string) {
+        let User;
+        try{
+            User = await this.UserModel.findOne({ userName: userName, userPassword: userPassword });
         } catch(error) {
             throw new NotFoundException('Error while searching for existing Users.');
         }

@@ -14,6 +14,13 @@ export class UserController {
         return {id: generatedId };
     }
 
+    @Post('/login') 
+    async loginUser(@Body() completeBody: User ){
+        debugger;
+        const generatedId = await this.UserService.loginUser(completeBody);
+        return {id: generatedId };
+    }
+
     @Get('all') 
     async getUsers(){
         debugger;
